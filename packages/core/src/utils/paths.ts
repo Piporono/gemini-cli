@@ -157,3 +157,13 @@ export function getProjectTempDir(projectRoot: string): string {
   const hash = getProjectHash(projectRoot);
   return path.join(os.homedir(), GEMINI_DIR, TMP_DIR_NAME, hash);
 }
+
+/**
+ * Normalizes path separators in a string to use forward slashes, but keep escaped spaces.
+ * This is useful for ensuring consistent path formatting across different OS.
+ * @param path - The path to normalize.
+ * @returns The normalized path with forward slashes.
+ */
+export function normalizeEscapedPathSeparators(path: string): string {
+  return path.replace(/\\(?! )/g, '/');
+}

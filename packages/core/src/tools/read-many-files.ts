@@ -291,8 +291,12 @@ Use this tool when the user's query implies needing the content of several files
       };
     }
 
+    const normalizedSearchPatterns = searchPatterns.map((pattern) =>
+      pattern.replace(/\\/g, '/'),
+    );
+
     try {
-      const entries = await glob(searchPatterns, {
+      const entries = (await glob(normalizedSearchPatterns, {
         cwd: toolBaseDir,
         ignore: effectiveExcludes,
         nodir: true,
@@ -300,7 +304,7 @@ Use this tool when the user's query implies needing the content of several files
         absolute: true,
         nocase: true,
         signal,
-      });
+      })).map((entry) => path.normalize(entry));
 
       const filteredEntries = respectGitIgnore
         ? fileDiscovery

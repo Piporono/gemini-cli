@@ -15,6 +15,7 @@ import {
   getErrorMessage,
   Config,
   FileDiscoveryService,
+  normalizeEscapedPathSeparators,
 } from '@google/gemini-cli-core';
 import {
   MAX_SUGGESTIONS_TO_SHOW,
@@ -255,10 +256,11 @@ export function useCompletion(
 
     const partialPath = query.substring(atIndex + 1);
     const lastSlashIndex = partialPath.lastIndexOf('/');
-    const baseDirRelative =
+    const baseDirRelative = unescapePath(
       lastSlashIndex === -1
         ? '.'
-        : partialPath.substring(0, lastSlashIndex + 1);
+        : partialPath.substring(0, lastSlashIndex + 1)
+    );
     const prefix = unescapePath(
       lastSlashIndex === -1
         ? partialPath
@@ -314,9 +316,11 @@ export function useCompletion(
 
           if (entry.name.toLowerCase().startsWith(lowerSearchPrefix)) {
             foundSuggestions.push({
-              label: entryPathRelative + (entry.isDirectory() ? '/' : ''),
-              value: escapePath(
-                entryPathRelative + (entry.isDirectory() ? '/' : ''),
+              label: normalizeEscapedPathSeparators(entryPathRelative + (entry.isDirectory() ? '/' : '')),
+              value: normalizeEscapedPathSeparators(
+                escapePath(
+                  entryPathRelative + (entry.isDirectory() ? '/' : ''),
+                ),
               ),
             });
           }
@@ -367,8 +371,8 @@ export function useCompletion(
         .map((file: string) => {
           const relativePath = path.relative(cwd, file);
           return {
-            label: relativePath,
-            value: escapePath(relativePath),
+            label: normalizeEscapedPathSeparators(relativePath),
+            value: normalizeEscapedPathSeparators(escapePath(relativePath)),
           };
         })
         .filter((s) => {
@@ -449,10 +453,10 @@ export function useCompletion(
           }
 
           fetchedSuggestions = filteredEntries.map((entry) => {
-            const label = entry.isDirectory() ? entry.name + '/' : entry.name;
+            const label = normalizeEscapedPathSeparators(entry.isDirectory() ? entry.name + '/' : entry.name);
             return {
               label,
-              value: escapePath(label), // Value for completion should be just the name part
+              value: normalizeEscapedPathSeparators(escapePath(label)), // Value for completion should be just the name part
             };
           });
         }
