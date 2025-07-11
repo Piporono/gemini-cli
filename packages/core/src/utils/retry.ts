@@ -155,7 +155,7 @@ export async function retryWithBackoff<T>(
 
       // If we have persistent 429s and a fallback callback for OAuth
       if (
-        consecutive429Count >= 2 &&
+        consecutive429Count >= 10 &&
         onPersistent429 &&
         authType === AuthType.LOGIN_WITH_GOOGLE
       ) {
