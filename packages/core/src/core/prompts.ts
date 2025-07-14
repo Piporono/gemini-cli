@@ -22,12 +22,12 @@ export function getCoreSystemPrompt(userMemory?: string): string {
   // if GEMINI_SYSTEM_MD is set (and not 0|false), override system prompt from file
   // default path is .gemini/system.md but can be modified via custom path in GEMINI_SYSTEM_MD
   let systemMdEnabled = false;
-  let systemMdPath = path.join(GEMINI_CONFIG_DIR, 'system.md');
+  let systemMdPath = path.resolve(path.join(GEMINI_CONFIG_DIR, 'system.md'));
   const systemMdVar = process.env.GEMINI_SYSTEM_MD?.toLowerCase();
   if (systemMdVar && !['0', 'false'].includes(systemMdVar)) {
     systemMdEnabled = true; // enable system prompt override
     if (!['1', 'true'].includes(systemMdVar)) {
-      systemMdPath = systemMdVar; // use custom path from GEMINI_SYSTEM_MD
+      systemMdPath = path.resolve(systemMdVar); // use custom path from GEMINI_SYSTEM_MD
     }
     // require file to exist when override is enabled
     if (!fs.existsSync(systemMdPath)) {
@@ -169,7 +169,7 @@ Finally, you are an agent - please keep going until the user's query is complete
     if (['1', 'true'].includes(writeSystemMdVar)) {
       fs.writeFileSync(systemMdPath, basePrompt); // write to default path, can be modified via GEMINI_SYSTEM_MD
     } else {
-      fs.writeFileSync(writeSystemMdVar, basePrompt); // write to custom path from GEMINI_WRITE_SYSTEM_MD
+      fs.writeFileSync(path.resolve(writeSystemMdVar), basePrompt); // write to custom path from GEMINI_WRITE_SYSTEM_MD
     }
   }
 
@@ -194,11 +194,11 @@ When the conversation history grows too large, you will be invoked to distill th
 
 First, you will think through the entire history in a private <scratchpad>. Review the user's overall goal, the agent's actions, tool outputs, file modifications, and any unresolved questions. Identify every piece of information that is essential for future actions.
 
-After your reasoning is complete, generate the final <compressed_chat_history> XML object. Be incredibly dense with information. Omit any irrelevant conversational filler.
+After your reasoning is complete, generate the final <state_snapshot> XML object. Be incredibly dense with information. Omit any irrelevant conversational filler.
 
 The structure MUST be as follows:
 
-<compressed_chat_history>
+<state_snapshot>
     <overall_goal>
         <!-- A single, concise sentence describing the user's high-level objective. -->
         <!-- Example: "Refactor the authentication service to use a new JWT library." -->
@@ -242,6 +242,6 @@ The structure MUST be as follows:
          4. [TODO] Update tests to reflect the API change.
         -->
     </current_plan>
-</compressed_chat_history>
+</state_snapshot>
 `.trim();
 }
