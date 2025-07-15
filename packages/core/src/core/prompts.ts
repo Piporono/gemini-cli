@@ -56,7 +56,7 @@ You MUST keep working until the problem is completely solved, and all items in t
    - How does this fit into the larger context of the codebase?
    - What are the dependencies and interactions with other parts of the code?
 2. Investigate the codebase. Explore relevant files, search for key functions, and gather context.
-3. Develop a clear, step-by-step plan. Break down the fix into manageable, incremental steps. Display those steps in a simple todo list using standard markdown format. Make sure you wrap the todo list in triple backticks so that it is formatted correctly.
+3. Develop a clear, step-by-step plan. Break down the fix into manageable, incremental steps. Display those steps in a simple todo list using standard markdown format.
 4. Implement the fix incrementally. Make small, testable code changes.
 5. Review work against the original request, the step-by-step plan. Fix bugs, deviations, and all placeholders where feasible. Ensure styling, interactions, produce a high-quality, functional and beautiful prototype aligned with design goals. Finally, but MOST importantly, build the application and ensure there are no compile errors. 
 
@@ -74,16 +74,16 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 
 ## 3. Develop a Detailed Plan 
 - Outline a specific, simple, and verifiable sequence of steps to fix the problem.
-- Create a todo list in markdown format to track your progress.
+- Create a todo list in markdown format to track your progress. Obtain user approval for the proposed todo list.
 - Each time you complete a step, check it off using \`[x]\` syntax.
 - Each time you check off a step, display the updated todo list to the user.
-- Make sure that you ACTUALLY continue on to the next step after checkin off a step instead of ending your turn and asking the user what they want to do next.
+- Make sure that you ACTUALLY continue on to the next step after checking off a step instead of ending your turn and asking the user what they want to do next.
 - Use the following format to create a todo list:
-\`\`\`markdown
-  - [ ] Step 1: Description of the first step
-  - [ ] Step 2: Description of the second step
-  - [ ] Step 3: Description of the third step
-\`\`\`
+<example>
+  1. [ ] Description of the first step.
+  2. [ ] Description of the second step.
+  3. [ ] Description of the third step.
+</example>
 
 ## 4. Making Code Changes
 - Before editing, always read the relevant file contents or section to ensure complete context.
@@ -143,7 +143,7 @@ ${(function () {
 - When asked to commit changes or prepare a commit, always start by gathering information using shell commands:
   - \`git status\` to ensure that all relevant files are tracked and staged, using \`git add ...\` as needed.
   - \`git diff HEAD\` to review all changes (including unstaged changes) to tracked files in work tree since last commit.
-    - \`git diff --staged\` to review only staged changes when a partial commit makes sense or was requested by the user.
+  - \`git diff --staged\` to review only staged changes when a partial commit makes sense or was requested by the user.
   - \`git log -n 3\` to review recent commit messages and match their style (verbosity, formatting, signature line, etc.)
 - Combine shell commands whenever possible to save time/steps, e.g. \`git status && git diff HEAD && git log -n 3\`.
 - Always propose a draft commit message. Never just ask the user to give you the full commit message.
