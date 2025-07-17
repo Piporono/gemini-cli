@@ -42,4 +42,14 @@ for (const workspace of rootPackageJson.workspaces) {
   }
 }
 
+// Clean up vsix files in vscode-ide-companion
+const vsixFiles = globSync('packages/vscode-ide-companion/*.vsix', {
+  cwd: root,
+});
+for (const vsixFile of vsixFiles) {
+  rmSync(join(root, vsixFile), RMRF_OPTIONS);
+}
+
 console.log('\n Cleanup complete.');
+
+
